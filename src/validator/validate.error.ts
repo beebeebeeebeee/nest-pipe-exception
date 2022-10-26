@@ -1,11 +1,17 @@
-import { BadRequestException } from "@nestjs/common";
-import { Response } from "express";
+import { BadRequestException } from '@nestjs/common';
+import { Response } from 'express';
 
-export function validationError(payload: BadRequestException, request: Response) {
-  request.status(payload.getStatus())
+export function validationError(
+  code: string,
+  payload: BadRequestException,
+  request: Response,
+) {
+  request.status(payload.getStatus());
   return {
-    code: '110001',
+    code,
     data: {},
-    message: `Validation Error: ${(payload.getResponse() as any).message.join()}`
-  }
+    message: `Validation Error: ${(
+      payload.getResponse() as any
+    ).message.join()}`,
+  };
 }

@@ -1,11 +1,22 @@
-import { ArgumentMetadata, ValidationPipe } from "@nestjs/common";
+import {
+  ArgumentMetadata,
+  Type,
+  ValidationPipe,
+} from '@nestjs/common';
 
-export class CustomValidatorPipe extends ValidationPipe{
+export class CustomValidatorPipe extends ValidationPipe {
+  constructor(expectedType: Type<any>) {
+    super({ whitelist: true, expectedType });
+  }
+
   async transform(value: any, metadata: ArgumentMetadata): Promise<any> {
+    let result = null;
+    let error = null;
     try {
-      return await super.transform(value, metadata);
-    }catch (error){
-      return error;
+      result = await super.transform(value,metadata);
+    } catch (e) {
+      error = e;
     }
+    return { result, error };
   }
 }
